@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 
+namespace mengx {
 namespace logging {
 class Log {
  public:
@@ -65,3 +66,4 @@ void Log::Writer(T&& log, int level) {
 }
 
 }  // namespace logging
+}  // namespace mengx

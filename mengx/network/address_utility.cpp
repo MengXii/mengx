@@ -7,6 +7,7 @@
 
 #include "network/address_utility.h"
 
+namespace mengx {
 namespace network {
 
 uint32_t IpToInt(const string &ip) {
@@ -26,3 +27,4 @@ sockaddr_in ToAddress(uint32_t ip, uint16_t port) {
   return address;
 }
 }  // namespace network
+}  // namespace mengx

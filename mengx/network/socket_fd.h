@@ -7,6 +7,7 @@
 
 #include "base/cpp_feature.h"
 
+namespace mengx {
 namespace network {
 
 class SocketFd : private base::NonCopyable {
@@ -56,3 +57,4 @@ class SocketFd : private base::NonCopyable {
 };
 
 }  // namespace network
+}  // namespace mengx

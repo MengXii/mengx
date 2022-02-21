@@ -11,9 +11,11 @@
 
 #include <string>
 
+namespace mengx {
 namespace network {
 using std::string;
 
 uint32_t IpToInt(const string &ip);
 sockaddr_in ToAddress(uint32_t ip, uint16_t port);
 };  // namespace network
+}  // namespace mengx

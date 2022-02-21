@@ -5,6 +5,7 @@
 // Created by HJ on 2022/2/18.
 //
 
+namespace mengx {
 namespace base {
 
 class NonCopyable {
@@ -42,3 +43,4 @@ class NonCopyOrMovable {
 };
 
 }  // namespace base
+}  // namespace mengx

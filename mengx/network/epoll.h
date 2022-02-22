@@ -17,11 +17,11 @@ class Epoll : private base::NonCopyable {
  public:
   Epoll();
   ~Epoll();
-  bool AddEvent(IOEvent* ioEvent);
-  bool RemoveEvent(IOEvent* ioEvent);
-  bool ModifyEvent(IOEvent* ioEvent);
+  bool AddEvent(IOEvent* io_event);
+  bool RemoveEvent(IOEvent* io_event);
+  bool ModifyEvent(IOEvent* io_event);
   bool RemoveEvent(int fd);
-  int WaitEvent(epoll_event* eventList, int eventSize, int timeMs);
+  int WaitEvent(epoll_event* event_list, int evenevent_sizetSize, int time_ms);
 
  private:
   int EpollCtrl(int operation,int fd,int events);

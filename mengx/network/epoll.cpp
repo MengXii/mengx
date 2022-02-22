@@ -46,6 +46,14 @@ bool Epoll::RemoveEvent(IOEvent* io_event) {
   return true;
 }
 
+bool Epoll::RemoveEvent(int fd) {
+  if (EpollCtrl(EPOLL_CTL_DEL, fd, 0) < 0) {
+    Log::Out(Log::Error) << "Remove epoll error.";
+    return false;
+  }
+  return true;
+}
+
 bool Epoll::ModifyEvent(IOEvent* io_event) {
   if (EpollCtrl(EPOLL_CTL_MOD, io_event->GetFd(), io_event->GetEvents()) < 0) {
     Log::Out(Log::Error) << "Modify epoll error.";

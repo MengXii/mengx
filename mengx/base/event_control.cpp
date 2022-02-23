@@ -5,10 +5,10 @@
  * Created by HJ on 2022/02/22
  */
 
-#include "network/event_control.h"
+#include "base/event_control.h"
 
 namespace mengx {
-namespace network {
+namespace base {
 namespace {
 static const int KEventListCount = 32;
 }
@@ -17,12 +17,12 @@ EventControl::EventControl() : event_list_(KEventListCount) {}
 
 EventControl::~EventControl() { event_poll_.clear(); }
 
-void EventControl::AddEvent(std::shared_ptr<IOEvent> event) {
+void EventControl::AddEvent(std::shared_ptr<Event> event) {
   event_poll_.insert({event->GetFd(), event});
   epoll_.AddEvent(event.get());
 }
 
-void EventControl::RemoveEvent(std::shared_ptr<IOEvent> event) {
+void EventControl::RemoveEvent(std::shared_ptr<Event> event) {
   event_poll_.erase(event.GetFd());
   epoll_.RemoveEvent(event.get())
 }
@@ -35,7 +35,7 @@ void EventControl::RemoveEvent(int fd) {
   }
 }
 
-void EventControl::ModifyEvent(std::shared_ptr<IOEvent> event) {
+void EventControl::ModifyEvent(std::shared_ptr<Event> event) {
   int fd = event->GetFd();
   auto it = event_poll_.find(fd);
   if (it != event_poll_.end()) {
@@ -54,8 +54,8 @@ void EventControl::ModifyEvent(int fd) {
   }
 }
 
-void EventControl::GetEvent(int time_ms) {
-  int cnt = WaitEvent(&*event_list_.begin(), event_list_.size(), timeMs);
+void EventControl::RunEvent(int time_ms) {
+  int cnt = epoll_.WaitEvent(&*event_list_.begin(), event_list_.size(), timeMs);
   if (cnt < 0) {
     return;
   }
@@ -64,13 +64,13 @@ void EventControl::GetEvent(int time_ms) {
 
 void EventControl::RunHandle(int cnt) {
   for (int i = 0, i < cnt, i++) {
-      int fd = event_list_[i].data.fd;
-      auto event = event_poll[fd].lock();
-      if (event) {
-          event->Handle(event_list_[i].events);
-      } else {
-          ModifyEvent(fd);
-      }
+    int fd = event_list_[i].data.fd;
+    auto event = event_poll[fd].lock();
+    if (event) {
+      event->Handle(event_list_[i].events);
+    } else {
+      ModifyEvent(fd);
+    }
   }
 }
 

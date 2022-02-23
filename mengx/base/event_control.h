@@ -11,30 +11,30 @@
 #include <memory>
 #include <vector>
 
+#include "base/event.h"
 #include "network/epoll.h"
-#include "network/io_event.h"
 
 namespace mengx {
-namespace network {
+namespace base {
 
 class EventControl {
  public:
   EventControl();
   ~EventControl();
-  void AddEvent(std::shared_ptr<IOEvent> event);
+  void AddEvent(std::shared_ptr<Event> event);
   void RemoveEvent(int fd);
-  void RemoveEvent(std::shared_ptr<IOEvent> event);
+  void RemoveEvent(std::shared_ptr<Event> event);
   void ModifyEvent(int fd);
-  void ModifyEvent(std::shared_ptr<IOEvent> event);
+  void ModifyEvent(std::shared_ptr<Event> event);
   void GetEvent(int time_ms);
 
-private:
+ private:
   void RunHandle(int cnt);
 
  private:
   Epoll epoll_;
   std::vector<epoll_event> event_list_;
-  std::map<int, std::weak_ptr<IOEvent>> event_poll_;
-}
-}  // namespace network
+  std::map<int, std::weak_ptr<Event>> event_poll_;
+};
+}  // namespace base
 }  // namespace mengx

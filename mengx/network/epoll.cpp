@@ -30,16 +30,16 @@ int Epoll::EpollCtrl(int operation, int fd, int events) {
   return rst;
 }
 
-bool Epoll::AddEvent(IOEvent* io_event) {
-  if (EpollCtrl(EPOLL_CTL_ADD, io_event->GetFd(), io_event->GetEvents()) < 0) {
+bool Epoll::AddEvent(Event* event) {
+  if (EpollCtrl(EPOLL_CTL_ADD, event->GetFd(), event->GetEvents()) < 0) {
     Log::Out(Log::Error) << "Add epoll error.";
     return false;
   }
   return true;
 }
 
-bool Epoll::RemoveEvent(IOEvent* io_event) {
-  if (EpollCtrl(EPOLL_CTL_DEL, io_event->GetFd(), io_event->GetEvents()) < 0) {
+bool Epoll::RemoveEvent(Event* event) {
+  if (EpollCtrl(EPOLL_CTL_DEL, event->GetFd(), event->GetEvents()) < 0) {
     Log::Out(Log::Error) << "Remove epoll error.";
     return false;
   }
@@ -54,8 +54,8 @@ bool Epoll::RemoveEvent(int fd) {
   return true;
 }
 
-bool Epoll::ModifyEvent(IOEvent* io_event) {
-  if (EpollCtrl(EPOLL_CTL_MOD, io_event->GetFd(), io_event->GetEvents()) < 0) {
+bool Epoll::ModifyEvent(Event* vent) {
+  if (EpollCtrl(EPOLL_CTL_MOD, event->GetFd(), event->GetEvents()) < 0) {
     Log::Out(Log::Error) << "Modify epoll error.";
     return false;
   }

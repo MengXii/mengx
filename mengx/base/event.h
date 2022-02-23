@@ -4,25 +4,37 @@
 //
 // Created by HJ on 2022/2/21.
 //
-#include <stdint.h>
-#include "network/event_loop.h"
+#include <cstdint>
+
+#include "base/event_loop.h"
 
 namespace mengx {
-namespace network {
+namespace base {
 
-class IOEventCallback {
+enum { kRead = 0; kWriter = 1; kError = 2; kClose = 3; }
+
+class BaseEventCallback {
+ public:
+  virtual ~BaseEventCallback = default;
+  virtual void OnEvent(uint8_t result) = 0;
+}
+
+class IOEventCallback : public BaseEventCallback {
  public:
   virtual ~IOEventCallback() = default;
+
+  // Derived from BaseEventCallback
+  void OnEvent(uint8_t result);
   virtual void EventRead() = 0;
   virtual void EventWriter() = 0;
   virtual void EventError() = 0;
   virtual void EventClose() = 0;
 }
 
-class IOEvent {
+class Event {
  public:
-  IOEvent(EventLoop *loop, int event_fd);
-  ~IoEvent();
+  Event(EventLoop *loop, int event_fd, IOEventCallback *callback);
+  ~Event();
   void EnableWriter(bool enable);
   void EnableRead(bool enable);
   void EnableError(bool enable);
@@ -37,11 +49,11 @@ class IOEvent {
   void Update();
 
  private:
-  EventLoop *loop_callback_;
-  IOEventCallback *event_callback_;
+  EventLoop *loop_;
+  BaseEventCallback *event_callback_;
   int event_fd_;
   int events_;
 };
 
-}  // namespace network
+}  // namespace base
 }  // namespace mengx

@@ -77,6 +77,8 @@ void Event::DisableAll() {
 
 void Event::Update() { loop_->ModifyEvent(event_fd_); }
 
+void Event::Remove() { loop_->RemoveEvent(event_fd_); }
+
 void Event::Handle(uint32_t events) {
   if (event_callback_ == nullptr) {
     return;

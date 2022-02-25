@@ -45,6 +45,8 @@ class Event {
   bool IsReading();
   void Handle(uint32_t events);
 
+  void Remove();
+
  private:
   void Update();
 

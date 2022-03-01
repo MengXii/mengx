@@ -24,7 +24,7 @@ class Socket : base::NoCopyable {
   int Connect(uint32_t ip, uint16_t port);
   int Accept(sockaddr_in *addr);
   ssize_t Read(void *buf, size_t count);
-  ssize_t Readv(const struct iovec *iov, int iovcnt);
+  static ssize_t Readv(const struct iovec *iov, int iovcnt);
   ssize_t Write(const void *buf, size_t count);
   void Close();
   int Fd();
